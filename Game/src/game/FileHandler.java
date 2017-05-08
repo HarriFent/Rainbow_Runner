@@ -1,24 +1,27 @@
 package game;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.FilenameFilter;
-import java.io.PrintStream;
-import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FileHandler {
+public class FileHandler implements Serializable{
 
-    private InputStreamReader ir = new InputStreamReader(System.in);
-    private BufferedReader br;
+    private FileInputStream in;
     private FileOutputStream fos;
-    private PrintStream ps;
-    private FileReader frs;
+    private ObjectInputStream ois;
+    private ObjectOutputStream objs;
     private File file;
-    public ArrayList<ArrayList<Short>> levels = new ArrayList<ArrayList<Short>>();
-
+    private ArrayList<ArrayList<Integer>> levels;
+    
+    public FileHandler() {
+        levels = new ArrayList<>();
+    }
+    
     private boolean checkFile(String filename) {
         File myFile = new File(filename);
         boolean b = myFile.exists();
@@ -30,10 +33,10 @@ public class FileHandler {
 
         String line;
         String dir;
-        int counter = 0;
         try {
             file = new File("C:\\Users\\H\\AppData\\Local\\Temp");
             File[] matchingFiles = file.listFiles(new FilenameFilter() {
+                @Override
                 public boolean accept(File dir, String name) {
                     return name.startsWith("javaGameTempFile") && name.endsWith(".tmp");
                 }
@@ -44,39 +47,37 @@ public class FileHandler {
                 file = matchingFiles[0];
             }
             dir = file.getPath();
-            frs = new FileReader(dir);
-            br = new BufferedReader(frs);
-            while (br.readLine() != null) {
-                counter++;
+            in = new FileInputStream(dir);
+            ois = new ObjectInputStream(in);
+            String[] strLevel = (String[]) ois.readObject();
+            ArrayList<Integer> singleLevel = new ArrayList<>();
+            for (String level1 : strLevel) {
+                singleLevel.add(Integer.valueOf(level1));
             }
-            counter = 0;
-            for (counter = 0; (line = br.readLine()) != null; counter++) {
-                ArrayList<Short> singleLevel = new ArrayList<Short>();
-                String[] level = line.split("\\s*,\\s*");
-                for (int i = 0; i < level.length; i++) {
-                    singleLevel.add(Short.valueOf(level[i]));
-                }
-                levels.add(singleLevel);
-            }
-
-            frs.close();
+            levels.add(singleLevel);
+            ois.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public void saveToFile(short[] level) {
+    public void saveToFile(Object[] level) {
         try {
             fos = new FileOutputStream(file);
-            ps = new PrintStream(fos);
+            objs = new ObjectOutputStream(fos);
             String[] strLevel = new String[level.length];
             for (int i = 0; i < level.length; i++) {
                 strLevel[i] = String.valueOf(level[i]);
             }
-            ps.print(strLevel);
+            
+            objs.writeObject(strLevel);
             fos.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    Object[] getLevel(int index) {
+        return levels.get(index).toArray();
     }
 }
