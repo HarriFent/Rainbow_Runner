@@ -27,10 +27,14 @@ public class Menu {
             btn1.mouseOver = true;
             if (mouseInput.clicked == true) {
                 game.gameState = GAMESTATE.GAME;
-                game.handler.addObject(new Player(200, 100, ID.Player, game.handler, game));
+                Player p = new Player(200, 100, ID.Player, game.handler, game);
+                game.handler.addObject(p);
                 for (int i = 0; i < game.level.length; i++) {
-                    if (game.level[i] == 1) {
+                    if ((int) game.level[i] == 2) {
                         game.handler.addObject(new Block((i % 30) * 20, (i / 30) * 20, ID.BasicBlock, game.handler, game));
+                    }else if ((int) game.level[i] == 1) {
+                        p.setx((i % 30) * 20);
+                        p.sety((i / 30) * 20);
                     }
                 }
             }

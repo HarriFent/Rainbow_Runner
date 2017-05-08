@@ -18,7 +18,7 @@ public class CollisionHandler {
         for (GameObject i : handler.object) {
             if (i.id == ID.BasicBlock) {
                 Rectangle r3 = i.getBounds();
-                Rectangle r2 = new Rectangle(player.getx(), player.gety() + player.geth(), player.getw(), collisionRange);
+                Rectangle r2 = new Rectangle(player.getx()+1, player.gety() + player.geth(), player.getw()-2, collisionRange);
                 if (r2.intersects(r3) && player.getdy() >= 0 && i.collide == true) {
                     return true;
                 }
@@ -31,7 +31,7 @@ public class CollisionHandler {
         for (GameObject i : handler.object) {
             if (i.id == ID.BasicBlock) {
                 Rectangle r3 = i.getBounds();
-                Rectangle r2 = new Rectangle(player.x, player.y - collisionRange, player.w, collisionRange);
+                Rectangle r2 = new Rectangle(player.x+1, player.y - collisionRange, player.w-2, collisionRange);
                 if (r2.intersects(r3) && player.dy < 0 && i.collide == true) {
                     return true;
                 }

@@ -4,6 +4,7 @@ import game.Game.GAMESTATE;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.text.DecimalFormat;
 
 public class Player extends GameObject {
 
@@ -36,13 +37,13 @@ public class Player extends GameObject {
                 }
             }
             //decrease x velocity
-            if (d2x == 0) {
-                if (dx > 0.1) {
+            if (d2x == 0.0) {
+                if (Double.valueOf(new DecimalFormat(".##").format(dx)) > 0.1) {
                     dx = dx - 0.2;
-                } else if (dx < 0.1) {
+                }else if (Double.valueOf(new DecimalFormat(".##").format(dx)) < -0.1) {
                     dx = dx + 0.2;
                 } else {
-                    dx = 0;
+                    dx = 0.0;
                 }
             }
             //change and limit y velocity
@@ -67,13 +68,28 @@ public class Player extends GameObject {
                 stateTick = 8;
                 state = STATE.SHORT;
             }
+            
+            //above check
+            if (cHandler.checkAbove()&& d2y < 1) {
+                d2y = 1;
+                dy = 0;
+                y = ((y/20)*20)+h;
+            }
 
+            //left and right check
+            if (cHandler.checkLeft()&& dx<0) {
+                dx= 0;
+                d2x = 0;
+            } else if (cHandler.checkRight()&& dx>0) {
+                dx= 0;
+                d2x = 0;
+            }
+            
             if (stateTick > 0 && state != STATE.IDLE) {
                 stateTick--;
             } else {
                 state = STATE.IDLE;
             }
-
             //change position
             x += dx;
             y += dy;
