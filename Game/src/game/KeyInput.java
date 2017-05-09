@@ -29,6 +29,11 @@ public class KeyInput extends KeyAdapter {
             case KeyEvent.VK_SPACE:
                 spacePressed = true;
                 break;
+            case KeyEvent.VK_ESCAPE:
+                handler.clearObjects();
+                HUD.SCORE = 0;
+                game.gameState = GAMESTATE.MENU;
+                break;
             default:
                 break;
         }
@@ -62,6 +67,7 @@ public class KeyInput extends KeyAdapter {
             } else if (game.gameState == GAMESTATE.GAMEOVER) {
                 game.gameState = GAMESTATE.GAME;
                 player.dy = 0;
+                player.dx = 0;
                 HUD.SCORE = 0;
                 for (int i = 0; i < game.level.length; i++) {
                     if ((int) game.level[i] == 1) {
@@ -72,9 +78,11 @@ public class KeyInput extends KeyAdapter {
                 }
                 for (int i = 0; i < handler.object.size(); i++) {
                     GameObject tempObject = handler.object.get(i);
+                    tempObject.collide = true;
                     if (tempObject.id == ID.BasicBlock) {
                         tempObject.color = new Color(0, 255, 0);
-                        tempObject.collide = true;
+                    } else if (tempObject.id == ID.ExplodeBlock){
+                        tempObject.color = new Color(0, 0, 150);
                     }
                 }
             }

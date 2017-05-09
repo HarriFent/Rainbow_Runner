@@ -16,7 +16,7 @@ public class CollisionHandler {
 
     public boolean checkOnGround() {
         for (GameObject i : handler.object) {
-            if (i.id == ID.BasicBlock) {
+            if (Block.isIDSolid(i.id)) {
                 Rectangle r3 = i.getBounds();
                 Rectangle r2 = new Rectangle(player.getx()+1, player.gety() + player.geth(), player.getw()-2, collisionRange);
                 if (r2.intersects(r3) && player.getdy() >= 0 && i.collide == true) {
@@ -29,7 +29,7 @@ public class CollisionHandler {
 
     public boolean checkAbove() {
         for (GameObject i : handler.object) {
-            if (i.id == ID.BasicBlock) {
+            if (Block.isIDSolid(i.id)) {
                 Rectangle r3 = i.getBounds();
                 Rectangle r2 = new Rectangle(player.x+1, player.y - collisionRange, player.w-2, collisionRange);
                 if (r2.intersects(r3) && player.dy < 0 && i.collide == true) {
@@ -42,7 +42,7 @@ public class CollisionHandler {
 
     public boolean checkLeft() {
         for (GameObject i : handler.object) {
-            if (i.id == ID.BasicBlock) {
+            if (Block.isIDSolid(i.id)) {
                 Rectangle r3 = i.getBounds();
                 Rectangle r2 = new Rectangle(player.x - collisionRange, player.y + 3, collisionRange, player.h - 6);
                 if (r2.intersects(r3) && i.collide == true) {
@@ -55,7 +55,7 @@ public class CollisionHandler {
 
     public boolean checkRight() {
         for (GameObject i : handler.object) {
-            if (i.id == ID.BasicBlock) {
+            if (Block.isIDSolid(i.id)) {
                 Rectangle r3 = i.getBounds();
                 Rectangle r2 = new Rectangle(player.x + 20, player.y + 3, collisionRange, player.h - 6);
                 if (r2.intersects(r3) && i.collide == true) {
@@ -68,10 +68,10 @@ public class CollisionHandler {
 
     public int getTouchedBlockIndex() {
         for (int i = 1; i < handler.object.size(); i++) {
-            if (handler.object.get(i).id == ID.BasicBlock) {
+            if (Block.isIDSolid(handler.object.get(i).id)) {
                 Rectangle r = handler.object.get(i).getBounds();
                 Rectangle r3 = new Rectangle(player.x, player.y + 20, player.w, collisionRange);
-                if (i + 1 < handler.object.size() && handler.object.get(i + 1).id == ID.BasicBlock) {
+                if (i + 1 < handler.object.size() && Block.isIDSolid(handler.object.get(i + 1).id)) {
                     Rectangle r2 = handler.object.get(i + 1).getBounds();
                     if (r.intersection(r3).getWidth() >= r2.intersection(r3).getWidth()
                             && r.intersection(r3).getHeight() >= r2.intersection(r3).getHeight()) {

@@ -30,11 +30,21 @@ public class Menu {
                 Player p = new Player(200, 100, ID.Player, game.handler, game);
                 game.handler.addObject(p);
                 for (int i = 0; i < game.level.length; i++) {
-                    if ((int) game.level[i] == 2) {
-                        game.handler.addObject(new Block((i % 30) * 20, (i / 30) * 20, ID.BasicBlock, game.handler, game));
-                    }else if ((int) game.level[i] == 1) {
-                        p.setx((i % 30) * 20);
-                        p.sety((i / 30) * 20);
+                    switch ((int) game.level[i]) {
+                        case 1:
+                            p.setx((i % 30) * 20);
+                            p.sety((i / 30) * 20);
+                            break;
+                        case 2:
+                            game.handler.addObject(new Block((i % 30) * 20, (i / 30) * 20, ID.BasicBlock, game.handler, game));
+                            break;
+                        case 3:
+                            game.handler.addObject(new Portal((i % 30) * 20, (i / 30) * 20, ID.PortalBlock, game.handler, game));
+                            break;
+                        case 4:
+                            game.handler.addObject(new ExplodeBlock((i % 30) * 20, (i / 30) * 20, ID.ExplodeBlock, game.handler, game));
+                        default:
+                            break;
                     }
                 }
             }

@@ -1,6 +1,10 @@
 package game;
 
 public enum ID {
+    Air(),
     Player(),
-    BasicBlock();
+    BasicBlock(),
+    PortalBlock(),
+    ExplodeBlock();
 }
+

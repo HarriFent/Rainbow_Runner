@@ -29,4 +29,10 @@ public class Handler {
     public void removeObject(GameObject object) {
         this.object.remove(object);
     }
+
+    public void clearObjects() {
+        for (int i = 0; i < object.size(); i++) {
+            object = new LinkedList<GameObject>();
+        }
+    }
 }

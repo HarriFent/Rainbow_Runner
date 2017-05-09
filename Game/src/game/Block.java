@@ -10,7 +10,7 @@ import java.awt.Rectangle;
 public class Block extends GameObject {
 
     private int cInt1 = 0, cInt2 = 255;
-    private CollisionHandler cHandler;
+    protected CollisionHandler cHandler;
     private float alpha;
 
     public Block(int x, int y, ID id, Handler handler, Game game) {
@@ -77,5 +77,16 @@ public class Block extends GameObject {
     @Override
     public Rectangle getBounds() {
         return new Rectangle(x, y, w, h);
+    }
+
+    public static boolean isIDSolid(ID id) {
+        switch (id) {
+            case BasicBlock:
+                return true;
+            case ExplodeBlock:
+                return true;
+            default:
+                return false;
+        }
     }
 }

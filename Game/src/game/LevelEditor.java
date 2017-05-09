@@ -11,18 +11,14 @@ public class LevelEditor {
     private final Game game;
     private final FileHandler fHandler;
     private Object[] level;
-
-    private enum dObject {
-        Air, Player, Basic_Block;
-    }
-    private dObject object;
+    private ID object;
 
     public LevelEditor(MouseInput mouseInput, Game game, FileHandler fileHandler) {
         this.mouseInput = mouseInput;
         this.game = game;
         fHandler = fileHandler;
         level = fHandler.getLevel(0);
-        object = dObject.Air;
+        object = ID.Air;
     }
 
     public void tick() {
@@ -36,25 +32,36 @@ public class LevelEditor {
                     case Player:
                         level[index] = 1;
                         break;
-                    case Basic_Block:
+                    case BasicBlock:
                         level[index] = 2;
+                        break;
+                    case PortalBlock:
+                        level[index] = 3;
+                        break;
+                    case ExplodeBlock:
+                        level[index] = 4;
                         break;
                     default:
                         break;
                 }
             }
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 5; i++) {
                 if (new Rectangle(i * 20, 560, 20, 20).contains(mouseInput.getMousePos())) {
-                    System.out.print(i);
                     switch (i) {
                         case 0:
-                            object = dObject.Air;
+                            object = ID.Air;
                             break;
                         case 1:
-                            object = dObject.Player;
+                            object = ID.Player;
                             break;
                         case 2:
-                            object = dObject.Basic_Block;
+                            object = ID.BasicBlock;
+                            break;
+                        case 3:
+                            object = ID.PortalBlock;
+                            break;
+                        case 4:
+                            object = ID.ExplodeBlock;
                             break;
                         default:
                     }
@@ -82,6 +89,14 @@ public class LevelEditor {
                     g.setColor(Color.green);
                     g.fillRect(x, y, 20, 20);
                     break;
+                case 3:
+                    g.setColor(new Color(150,0,150));
+                    g.fillRect(x, y, 20, 20);
+                    break;
+                case 4:
+                    g.setColor(new Color(0,0,150));
+                    g.fillRect(x, y, 20, 20);
+                    break;
                 default:
                     break;
             }
@@ -95,6 +110,10 @@ public class LevelEditor {
         g.fillOval(20, 560, 20, 20);
         g.setColor(Color.green);
         g.fillRect(40, 560, 20, 20);
+        g.setColor(new Color(150,0,150));
+        g.fillRect(60, 560, 20, 20);
+        g.setColor(new Color(0,0,150));
+        g.fillRect(80, 560, 20, 20);
         for (int i = 0; i < 30; i++) {
             g.setColor(new Color(100, 100, 100));
             g.drawLine(i * 20 - 1, 0, i * 20 - 1, 559);
