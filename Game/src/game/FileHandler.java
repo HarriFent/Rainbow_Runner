@@ -9,7 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FileHandler implements Serializable{
+public class FileHandler implements Serializable {
 
     private FileInputStream in;
     private FileOutputStream fos;
@@ -17,11 +17,11 @@ public class FileHandler implements Serializable{
     private ObjectOutputStream objs;
     private File file;
     private ArrayList<ArrayList<Integer>> levels;
-    
+
     public FileHandler() {
         levels = new ArrayList<>();
     }
-    
+
     private boolean checkFile(String filename) {
         File myFile = new File(filename);
         boolean b = myFile.exists();
@@ -34,15 +34,22 @@ public class FileHandler implements Serializable{
         String line;
         String dir;
         try {
-            file = new File("C:\\Users\\H\\AppData\\Local\\Temp");
-            File[] matchingFiles = file.listFiles(new FilenameFilter() {
+            file = File.createTempFile("javaGameTempFile", ".tmp");
+            File file2 = new File(file.getParent());
+            File[] matchingFiles = file2.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
                     return name.startsWith("javaGameTempFile") && name.endsWith(".tmp");
                 }
             });
-            if (matchingFiles.length == 0) {
-                file = File.createTempFile("javaGameTempFile", ".tmp");
+            if (matchingFiles.length == 2) {
+                if (matchingFiles[0].getPath().equals(file.getPath())) {
+                    file.delete();
+                    file = matchingFiles[1];
+                } else {
+                    file.delete();
+                    file = matchingFiles[0];
+                }
             } else {
                 file = matchingFiles[0];
             }
@@ -69,7 +76,7 @@ public class FileHandler implements Serializable{
             for (int i = 0; i < level.length; i++) {
                 strLevel[i] = String.valueOf(level[i]);
             }
-            
+
             objs.writeObject(strLevel);
             fos.close();
         } catch (Exception ex) {

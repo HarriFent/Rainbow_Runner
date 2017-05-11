@@ -60,7 +60,7 @@ public class Player extends GameObject {
             }
 
             //check off screen
-            if (y <= 0) {
+            if (y <= -20) {
                 state = STATE.ABOVEARROW;
             } else if (x >= 600) {
                 state = STATE.RIGHTARROW;
@@ -100,7 +100,7 @@ public class Player extends GameObject {
 
             if (stateTick > 0 && state != STATE.IDLE) {
                 stateTick--;
-            } else if (x > -20 && x < 600 && y > 0) {
+            } else if (x > -20 && x < 600 && y > -20) {
                 state = STATE.IDLE;
             }
             //change position
